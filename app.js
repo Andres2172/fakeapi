@@ -1,124 +1,153 @@
-// Simulación de FakeAPI
 const recetas = [
-  {
-    id: 1,
-    titulo: "Pasta Carbonara",
-    categoria: "Pasta",
-    imagen: "https://source.unsplash.com/featured/?pasta"
-  },
-  {
-    id: 2,
-    titulo: "Ensalada César",
-    categoria: "Ensalada",
-    imagen: "https://source.unsplash.com/featured/?salad"
-  },
-  {
-    id: 3,
-    titulo: "Pizza Margarita",
-    categoria: "Pizza",
-    imagen: "https://source.unsplash.com/featured/?pizza"
-  }
+  { titulo: "Spaghetti Bolognesa", categoria: "Pasta", imagen: "https://source.unsplash.com/400x300/?spaghetti" },
+  { titulo: "Pollo al horno", categoria: "Carnes", imagen: "https://source.unsplash.com/400x300/?chicken" },
+  { titulo: "Ensalada César", categoria: "Ensaladas", imagen: "https://source.unsplash.com/400x300/?salad" },
+  { titulo: "Pizza margarita", categoria: "Pizza", imagen: "https://source.unsplash.com/400x300/?pizza" },
+  { titulo: "Tacos de carne", categoria: "Mexicana", imagen: "https://source.unsplash.com/400x300/?tacos" }
 ];
 
-let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+const tips = [
+  "Usa cuchillos afilados para mayor seguridad.",
+  "Prueba los condimentos mientras cocinas.",
+  "Lava bien frutas y verduras.",
+  "Precalienta el horno antes de usarlo.",
+  "No sobrecargues la sartén para dorar bien los alimentos."
+];
 
-function showTab(id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if (id === "mas") {
-    renderFavoritos();
-    renderTips();
-  }
-}
+document.addEventListener("DOMContentLoaded", () => {
+  activarNavegacion();
+  mostrarRecetas();
+  mostrarTips();
+  generarFiltros();
+  mostrarFavoritos();
+});
 
-// Mostrar recetas
-function renderRecetas() {
-  const contenedor = document.getElementById("lista-recetas");
-  const filtro = document.getElementById("categoriaFiltro").value;
-  contenedor.innerHTML = "";
+function activarNavegacion() {
+  const botones = document.querySelectorAll("nav button");
+  const secciones = document.querySelectorAll(".section");
 
-  recetas
-    .filter(r => !filtro || r.categoria === filtro)
-    .forEach(r => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${r.titulo}</h3>
-        <img src="${r.imagen}" alt="${r.titulo}">
-        <p><strong>Categoría:</strong> ${r.categoria}</p>
-        <button onclick="agregarFavorito(${r.id})">❤️ Favorito</button>
-      `;
-      contenedor.appendChild(card);
+  botones.forEach(btn => {
+    btn.addEventListener("click", () => {
+      secciones.forEach(sec => sec.classList.remove("active"));
+      const target = document.getElementById(btn.dataset.section);
+      if (target) {
+        target.classList.add("active");
+        if (btn.dataset.section === "favoritos") {
+          mostrarFavoritos();
+        }
+      }
     });
-}
-
-// Buscador
-document.getElementById("buscador").addEventListener("input", e => {
-  const query = e.target.value.toLowerCase();
-  const resultados = recetas.filter(r => r.titulo.toLowerCase().includes(query));
-  const contenedor = document.getElementById("resultado-busqueda");
-  contenedor.innerHTML = "";
-  resultados.forEach(r => {
-    contenedor.innerHTML += `<div class="card"><h3>${r.titulo}</h3><img src="${r.imagen}"></div>`;
   });
-});
-
-// CRUD Favoritos
-function agregarFavorito(id) {
-  if (!favoritos.includes(id)) favoritos.push(id);
-  localStorage.setItem("favoritos", JSON.stringify(favoritos));
-  alert("Agregado a favoritos");
 }
 
-function renderFavoritos() {
-  const contenedor = document.getElementById("lista-favoritos");
+function mostrarRecetas(filtro = "") {
+  const contenedor = document.getElementById("recetas");
   contenedor.innerHTML = "";
-  const favs = recetas.filter(r => favoritos.includes(r.id));
-  favs.forEach(r => {
+
+  const lista = filtro ? recetas.filter(r => r.categoria === filtro) : recetas;
+
+  lista.forEach(r => {
     contenedor.innerHTML += `
-      <div class="card">
+      <div class="receta">
+        <img src="${r.imagen}" alt="${r.titulo}">
         <h3>${r.titulo}</h3>
-        <img src="${r.imagen}">
-        <button onclick="eliminarFavorito(${r.id})">🗑 Eliminar</button>
-      </div>`;
+        <p>Categoría: ${r.categoria}</p>
+        <button onclick="toggleFavorito('${r.titulo}')">
+          ${esFavorito(r.titulo) ? "Quitar de Favoritos" : "Agregar a Favoritos"}
+        </button>
+      </div>
+    `;
   });
 }
 
-function eliminarFavorito(id) {
-  favoritos = favoritos.filter(f => f !== id);
+function mostrarTips() {
+  const contenedor = document.getElementById("tips");
+  contenedor.innerHTML = "";
+  tips.forEach(tip => {
+    contenedor.innerHTML += `<div class="tip">${tip}</div>`;
+  });
+}
+
+function mostrarFavoritos() {
+  const contenedor = document.getElementById("favoritas");
+  contenedor.innerHTML = "";
+  const favs = obtenerFavoritos();
+  const recetasFavoritas = recetas.filter(r => favs.includes(r.titulo));
+
+  if (recetasFavoritas.length === 0) {
+    contenedor.innerHTML = "<p>No tienes recetas favoritas aún.</p>";
+    return;
+  }
+
+  recetasFavoritas.forEach(r => {
+    contenedor.innerHTML += `
+      <div class="receta">
+        <img src="${r.imagen}" alt="${r.titulo}">
+        <h3>${r.titulo}</h3>
+        <p>Categoría: ${r.categoria}</p>
+        <button onclick="toggleFavorito('${r.titulo}')">Quitar de Favoritos</button>
+      </div>
+    `;
+  });
+}
+
+function toggleFavorito(titulo) {
+  let favoritos = obtenerFavoritos();
+  if (favoritos.includes(titulo)) {
+    favoritos = favoritos.filter(f => f !== titulo);
+  } else {
+    favoritos.push(titulo);
+  }
   localStorage.setItem("favoritos", JSON.stringify(favoritos));
-  renderFavoritos();
+  mostrarRecetas();
+  mostrarFavoritos();
 }
 
-// Tips de cocina aleatorios
-function renderTips() {
-  const tips = [
-    "Agrega sal al agua cuando cocines pasta 🍝",
-    "Usa limón para evitar que se oxide la fruta 🍋",
-    "Precalienta el horno antes de meter tu platillo 🔥",
-    "Corta la cebolla bajo agua para no llorar 🧅😭",
-    "Guarda las hierbas frescas en un vaso con agua 🌿"
-  ];
-
-  const random = tips[Math.floor(Math.random() * tips.length)];
-  document.getElementById("tips").innerHTML = `<div class="card"><p>${random}</p></div>`;
+function esFavorito(titulo) {
+  const favoritos = obtenerFavoritos();
+  return favoritos.includes(titulo);
 }
 
-// Splash
-setTimeout(() => {
-  document.getElementById("splash").style.display = "none";
-}, 2000);
+function obtenerFavoritos() {
+  return JSON.parse(localStorage.getItem("favoritos")) || [];
+}
 
-// Eventos
-document.getElementById("categoriaFiltro").addEventListener("change", renderRecetas);
-document.getElementById("formRegistro").addEventListener("submit", e => {
-  e.preventDefault();
-  alert("Registro exitoso ✔️");
-});
+function generarFiltros() {
+  const contenedor = document.getElementById("filtros");
+  const categorias = [...new Set(recetas.map(r => r.categoria))];
 
-// Inicial
-renderRecetas();
-renderTips();
+  contenedor.innerHTML = '<strong>Filtrar por categoría:</strong><br>';
+
+  categorias.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.textContent = cat;
+    btn.style.margin = "5px";
+    btn.style.backgroundColor = "#ff944d";
+    btn.style.color = "#fff";
+    btn.style.border = "none";
+    btn.style.borderRadius = "6px";
+    btn.style.padding = "0.3rem 0.6rem";
+    btn.onclick = () => mostrarRecetas(cat);
+    contenedor.appendChild(btn);
+  });
+
+  const btnTodos = document.createElement("button");
+  btnTodos.textContent = "Todas";
+  btnTodos.style.margin = "5px";
+  btnTodos.style.backgroundColor = "#aaa";
+  btnTodos.style.color = "#fff";
+  btnTodos.style.border = "none";
+  btnTodos.style.borderRadius = "6px";
+  btnTodos.style.padding = "0.3rem 0.6rem";
+  btnTodos.onclick = () => mostrarRecetas();
+  contenedor.appendChild(btnTodos);
+}
+
+
+
+
+
+
 
 
   
