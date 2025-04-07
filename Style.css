@@ -1,336 +1,191 @@
-/* Estilos Generales */
-body {
-  font-family: 'Open Sans', sans-serif; /* Fuente legible y moderna */
+/* Reset básico */
+* {
+  box-sizing: border-box; /* Asegura que el padding y border estén incluidos en el cálculo del ancho */
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
-  color: #333;
-  line-height: 1.6;
 }
 
-.container {
-  max-width: 960px;
-  margin: 30px auto;
-  padding: 30px;
-  background-color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+/* Estilos generales del body */
+body {
+  font-family: Arial, sans-serif; /* Fuente principal */
+  background-color: #f5f5f5; /* Fondo claro */
+  color: #333; /* Color de texto predeterminado */
+  line-height: 1.6; /* Mejora la legibilidad */
+  padding-bottom: 60px; /* Espacio para evitar solapamientos con la navegación inferior */
 }
 
-h1, h2, h3 {
-  color: #ff7043; /* Un naranja agradable */
-  margin-bottom: 15px;
+/* Barra de pestañas */
+.tabs {
+  display: flex;
+  overflow-x: auto; /* Permite desplazamiento horizontal si hay muchas pestañas */
+  background-color: #333; /* Fondo oscuro */
+  color: white; /* Texto blanco */
 }
 
-a {
-  color: #2196f3; /* Un azul vibrante */
-  text-decoration: none;
-  transition: color 0.3s ease;
+.tabs button {
+  flex: 1; /* Distribuye el espacio equitativamente entre las pestañas */
+  padding: 12px; /* Aumenta el padding para mejorar la experiencia táctil */
+  background-color: transparent; /* Elimina el fondo para consistencia */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1em; /* Tamaño de fuente adecuado */
+  transition: background-color 0.3s ease; /* Efecto suave al pasar el mouse */
 }
 
-a:hover {
-  color: #1976d2;
-  text-decoration: underline;
+.tabs button:hover,
+.tabs button:focus {
+  background-color: #555; /* Cambio de color al pasar el mouse o enfocar */
 }
 
-/* Splash Screen */
-.splash-screen {
+/* Navegación inferior fija */
+.bottom-nav {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: #f8f8f8;
+  background-color: #222; /* Fondo oscuro */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  justify-content: space-around; /* Distribuye los elementos equitativamente */
+  align-items: center; /* Centra verticalmente */
+  padding: 10px 0;
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Sombra para separarla del contenido */
 }
 
-.splash-screen.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.splash-screen .logo {
-  max-width: 160px;
-  margin-bottom: 20px;
-  animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.splash-screen h1 {
-  font-size: 1.5em;
-  color: #777;
-}
-
-/* Header y Navegación */
-.site-header {
-  background-color: #333;
-  color: #fff;
-  padding: 15px 20px;
-  border-radius: 6px 6px 0 0;
-}
-
-.main-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.menu-toggle {
-  background: none;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  display: none;
-  font-size: 1.1em;
-}
-
-.tabs {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-}
-
-.tabs li {
-  margin-right: 15px;
-}
-
-.tabs li:last-child {
-  margin-right: 0;
-}
-
-.tabs li a {
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.tabs li a:hover,
-.tabs li a.active,
-.tabs li a[aria-current="page"] {
-  background-color: #555;
-}
-
-/* Contenido Principal */
-.main-content {
-  padding: 30px;
-}
-
-.content {
-  display: none;
-  animation: fade-in 0.3s ease-out;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.content.active {
-  display: block;
-}
-
-/* Controles de Recetas (Buscar y Filtrar) */
-.controls-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.search-bar, .filter-bar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.search-bar label, .filter-bar label {
-  font-weight: bold;
-  color: #555;
-}
-
-.search-bar input[type="search"], .filter-bar select, .filter-bar input[type="text"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  flex-grow: 1;
-  font-size: 1em;
-}
-
-.search-bar button, .filter-bar button {
-  background-color: #ff7043;
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
-}
-
-.search-bar button:hover, .filter-bar button:hover {
-  background-color: #f4511e;
-}
-
-/* Lista de Recetas */
-.recipe-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.recipe-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  background-color: #fff;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-}
-
-.recipe-card h3 {
-  margin-top: 0;
-  color: #ff7043;
-  font-size: 1.2em;
-}
-
-.recipe-card .ingredients {
-  color: #777;
-  font-size: 0.9em;
-  margin-bottom: 10px;
-}
-
-.recipe-card .prep-time {
-  font-size: 0.9em;
-  color: #555;
-}
-
-.recipe-card .favorite-button {
+.bottom-nav button {
   background: none;
   border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-  color: #ccc;
-  transition: color 0.2s ease-in-out;
-}
-
-.recipe-card .favorite-button.active {
-  color: gold;
-}
-
-/* Categorías */
-.category-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.category-list li button {
-  background-color: #eee;
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.category-list li button:hover {
-  background-color: #ddd;
-}
-
-/* Favoritos */
-#contenedor-favoritos .mensaje-vacio {
-  font-style: italic;
-  color: #777;
-}
-
-/* Registro */
-#formulario-registro {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #f9f9f9;
-}
-
-#formulario-registro .form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-#formulario-registro label {
+  color: white;
   font-weight: bold;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-#formulario-registro input[type="text"],
-#formulario-registro input[type="email"],
-#formulario-registro input[type="password"],
-#formulario-registro input[type="tel"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
-}
-
-#formulario-registro .boton-registro {
-  background-color: #2e7d32; /* Verde para registro */
-  color: #fff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  font-size: 0.9em; /* Tamaño de fuente adecuado */
+  transition: color 0.3s ease; /* Efecto suave al pasar el mouse */
 }
 
-#formulario-registro .boton-registro:hover {
-  background-color: #1b5e20;
+.bottom-nav button:hover,
+.bottom-nav button:focus {
+  color: #007bff; /* Cambio de color al pasar el mouse o enfocar */
 }
 
-/* Acerca de */
-#funcionalidad-unica {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  background-color: #f9f9f9;
+/* Contenido principal */
+main {
+  padding: 1em; /* Espaciado interno */
 }
 
-#funcionalidad-unica h3 {
-  color: #2196f3;
-  margin-bottom: 10px;
+/* Pestañas de contenido */
+.tab {
+  display: none; /* Oculta todas las pestañas por defecto */
 }
 
-#boton-sorpresa {
-  background-color: #673ab7; /* Morado para la sorpresa */
-  color: #fff;
+.tab.active {
+  display: block; /* Muestra solo la pestaña activa */
+}
+
+/* Controles de formulario */
+.controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se ajusten en varias filas */
+  gap: 10px; /* Espaciado entre elementos */
+  margin-bottom: 1em; /* Espaciado inferior */
+}
+
+.controls input,
+.controls select {
+  padding: 10px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de fuente adecuado */
+  flex: 1; /* Ocupa todo el espacio disponible */
+  border: 1px solid #ccc; /* Borde ligero */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: border-color 0.3s ease; /* Efecto suave al enfocar */
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: #007bff; /* Cambio de color al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
+}
+
+/* Cuadrícula de productos */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Columnas responsivas */
+  gap: 1em; /* Espaciado entre elementos */
+}
+
+.product-card {
+  background-color: white; /* Fondo blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  padding: 1em; /* Espaciado interno */
+  text-align: center; /* Alineación centrada */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efecto suave al pasar el mouse */
+}
+
+.product-card:hover {
+  transform: translateY(-5px); /* Levanta ligeramente el elemento */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.product-card img {
+  max-width: 100%; /* Ajusta la imagen al ancho del contenedor */
+  height: 150px; /* Altura fija */
+  object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
+  margin-bottom: 0.5em; /* Espaciado inferior */
+}
+
+.product-card button {
+  background-color: #28a745; /* Verde */
+  color: white;
+  padding: 0.5em 1em; /* Espaciado interno */
   border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
+  border-radius: 5px; /* Bordes redondeados */
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  font-size: 0.9em; /* Tamaño de fuente adecuado */
+  transition: background-color 0.3s ease; /* Efecto suave al pasar el mouse */
 }
 
-#boton-sorpresa:hover {
-  background-
+.product-card button:hover {
+  background-color: #218838; /* Verde más oscuro */
+}
+
+/* Lista de carrito */
+ul#cartItems {
+  list-style: none; /* Elimina los marcadores de lista */
+  padding: 10px; /* Espaciado interno */
+}
+
+/* Formulario de registro */
+form#registerForm {
+  display: flex;
+  flex-direction: column; /* Alinea los elementos verticalmente */
+  gap: 10px; /* Espaciado entre elementos */
+}
+
+form#registerForm input,
+form#registerForm button {
+  padding: 10px; /* Espaciado interno */
+  font-size: 1em; /* Tamaño de fuente adecuado */
+  border: 1px solid #ccc; /* Borde ligero */
+  border-radius: 5px; /* Bordes redondeados */
+  transition: border-color 0.3s ease; /* Efecto suave al enfocar */
+}
+
+form#registerForm input:focus {
+  border-color: #007bff; /* Cambio de color al enfocar */
+  outline: none; /* Elimina el contorno predeterminado */
+}
+
+form#registerForm button {
+  background-color: #007bff; /* Azul */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s ease; /* Efecto suave al pasar el mouse */
+}
+
+form#registerForm button:hover {
+  background-color: #0056b3; /* Azul más oscuro */
+}
+
