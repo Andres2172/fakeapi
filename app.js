@@ -1,232 +1,126 @@
-const tabs = document.querySelectorAll('.tab');
-let cart = [];
-let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-let allProducts = [];
+// script.js
 
-function showTab(id) {
-  tabs.forEach(tab => tab.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if (id === 'products') renderProducts(allProducts);
-  if (id === 'favorites') renderFavorites();
-  if (id === 'cart') renderCart();
-  updateCartCount();
+const API_URL = "https://myfakeapi.com/api/cars/";
+const PIXABAY_API_KEY = "49710500-3a2411a573b4b0d71cb32f17f";
+
+// Genera una imagen desde Pixabay en base a marca, modelo y año
+const carImage = (car) => {
+  const query = `${car.car} ${car.car_model} ${car.car_model_year}`;
+  return `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&per_page=3`;
+};
+
+let cars = [];
+
+// Tabs
+function showTab(tabId) {
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+  document.getElementById(tabId).classList.add("active");
 }
 
-function updateCartCount() {
-  document.getElementById('cartCount').textContent = cart.length;
-}
-
-function addToCart(product) {
-  cart.push(product);
-  updateCartCount();
-  alert(`✅ "${product.title}" fue añadido al carrito con éxito 🛒`);
-}
-
-function toggleFavorite(product) {
-  const exists = favorites.find(p => p.id === product.id);
-  if (exists) {
-    favorites = favorites.filter(p => p.id !== product.id);
-    alert(`❌ "${product.title}" fue eliminado de tus favoritos`);
-  } else {
-    favorites.push(product);
-    alert(`❤️ "${product.title}" fue registrado como favorito`);
-  }
-  localStorage.setItem('favorites', JSON.stringify(favorites));
-  renderProducts(allProducts);
-  renderFavorites();
-}
-
-function isFavorite(productId) {
-  return favorites.some(p => p.id === productId);
-}
-
-function renderProducts(products) {
-  const container = document.getElementById('productContainer');
-  container.innerHTML = '';
-
-  products.forEach(product => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.title}">
-      <h4>${product.title}</h4>
-      <p>$${product.price}</p>
-      <button class="addCartBtn">Agregar al carrito</button>
-      <button class="favBtn">${isFavorite(product.id) ? 'Quitar de favoritos ❤️' : 'Agregar a favoritos 🤍'}</button>
-    `;
-
-    const addCartBtn = card.querySelector('.addCartBtn');
-    const favBtn = card.querySelector('.favBtn');
-
-    addCartBtn.addEventListener('click', () => addToCart(product));
-    favBtn.addEventListener('click', () => toggleFavorite(product));
-
-    container.appendChild(card);
-  });
-}
-
-function renderFavorites() {
-  const container = document.getElementById('favoriteContainer');
-  container.innerHTML = '';
-
-  if (favorites.length === 0) {
-    container.innerHTML = '<p style="text-align:center;">No tienes productos favoritos.</p>';
-    return;
-  }
-
-  favorites.forEach(product => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.title}">
-      <h4>${product.title}</h4>
-      <p>$${product.price}</p>
-      <button class="addCartBtn">Agregar al carrito</button>
-      <button class="favBtn">Quitar de favoritos ❤️</button>
-    `;
-
-    const addCartBtn = card.querySelector('.addCartBtn');
-    const favBtn = card.querySelector('.favBtn');
-
-    addCartBtn.addEventListener('click', () => addToCart(product));
-    favBtn.addEventListener('click', () => toggleFavorite(product));
-
-    container.appendChild(card);
-  });
-}
-
-function renderCart() {
-  const container = document.getElementById('cartItems');
-  container.innerHTML = '';
-  if (cart.length === 0) {
-    container.innerHTML = '<p>No hay productos en el carrito.</p>';
-    return;
-  }
-  cart.forEach(product => {
-    const li = document.createElement('li');
-    li.textContent = `${product.title} - $${product.price}`;
-    container.appendChild(li);
-  });
-}
-
-function setupFilters() {
-  const searchInput = document.getElementById('searchInput');
-  const categoryFilter = document.getElementById('categoryFilter');
-  const sortFilter = document.getElementById('sortFilter');
-
-  searchInput.addEventListener('input', () => {
-    let filtered = filterProducts();
-    renderProducts(filtered);
-  });
-
-  categoryFilter.addEventListener('change', () => {
-    let filtered = filterProducts();
-    renderProducts(filtered);
-  });
-
-  sortFilter.addEventListener('change', () => {
-    let filtered = filterProducts();
-    renderProducts(filtered);
-  });
-}
-
-function filterProducts() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const category = document.getElementById('categoryFilter').value;
-  const sort = document.getElementById('sortFilter').value;
-
-  let filtered = [...allProducts];
-
-  if (search) {
-    filtered = filtered.filter(p => p.title.toLowerCase().includes(search));
-  }
-
-  if (category !== 'all') {
-    filtered = filtered.filter(p => p.category === category);
-  }
-
-  if (sort === 'asc') {
-    filtered.sort((a, b) => a.price - b.price);
-  } else if (sort === 'desc') {
-    filtered.sort((a, b) => b.price - a.price);
-  }
-
-  return filtered;
-}
-
-async function loadProducts() {
+// Fetch cars
+async function fetchCars() {
   try {
-    const res = await fetch('https://fakestoreapi.com/products');
+    const res = await fetch(API_URL);
     const data = await res.json();
-    allProducts = data;
-    renderProducts(allProducts);
-    fillCategoryFilter();
-  } catch (error) {
-    console.error('Error cargando productos:', error);
+    cars = data.cars;
+    await displayCars(cars);
+    fillBrandFilter(cars);
+  } catch (err) {
+    document.getElementById("error-message").textContent = "Error al cargar autos.";
   }
 }
 
-async function fillCategoryFilter() {
-  try {
-    const res = await fetch('https://fakestoreapi.com/products/categories');
-    const categories = await res.json();
-    const select = document.getElementById('categoryFilter');
-    categories.forEach(cat => {
-      const option = document.createElement('option');
-      option.value = cat;
-      option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-      select.appendChild(option);
-    });
-  } catch (error) {
-    console.error('Error cargando categorías:', error);
+// Fetch imagen de Pixabay
+async function obtenerImagenPixabay(car) {
+  const res = await fetch(carImage(car));
+  const data = await res.json();
+  if (data.hits && data.hits.length > 0) {
+    return data.hits[0].webformatURL;
+  } else {
+    return "https://via.placeholder.com/400x300?text=Imagen+no+disponible";
   }
 }
 
-// Registro de usuario
-document.getElementById('registerForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+// Display cars
+async function displayCars(carList, containerId = "product-list") {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
 
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-
-  if (name && email && password && phone) {
-    alert(`✅ ¡Registro exitoso para ${name}!`);
-    document.getElementById('registerForm').reset();
-  } else {
-    alert('⚠️ Por favor completa todos los campos.');
+  for (const car of carList) {
+    const imageUrl = await obtenerImagenPixabay(car);
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `
+      <img src="${imageUrl}" alt="${car.car}">
+      <h3>${car.car}</h3>
+      <p>Modelo: ${car.car_model}</p>
+      <p>Año: ${car.car_model_year}</p>
+      <p>Color: ${car.car_color}</p>
+      <button onclick='addToFavorites(${JSON.stringify(car)})'>Agregar a favoritos</button>
+    `;
+    container.appendChild(div);
   }
-});
+}
 
-// Formulario de contacto
-document.getElementById('contactForm').addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const name = document.getElementById('contactName').value.trim();
-  const email = document.getElementById('contactEmail').value.trim();
-  const message = document.getElementById('contactMessage').value.trim();
-
-  if (name && email && message) {
-    alert(`📨 Gracias por contactarnos, ${name}. ¡Te responderemos pronto!`);
-    document.getElementById('contactForm').reset();
-  } else {
-    alert('⚠️ Todos los campos son obligatorios.');
+// Favoritos
+function addToFavorites(car) {
+  let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+  if (!favoritos.some(fav => fav.id === car.id)) {
+    favoritos.push(car);
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    alert("Agregado a favoritos");
+    loadFavorites();
   }
+}
+
+function loadFavorites() {
+  const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+  displayCars(favoritos, "favorites-list");
+}
+
+// Buscar
+const searchInput = document.getElementById("searchInput");
+const brandFilter = document.getElementById("brandFilter");
+
+searchInput.addEventListener("input", () => {
+  const term = searchInput.value.toLowerCase();
+  const filtered = cars.filter(car => car.car.toLowerCase().includes(term) || car.car_model.toLowerCase().includes(term));
+  displayCars(filtered, "filtered-cars");
 });
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-  showTab('home');
-  loadProducts();
-  setupFilters();
+brandFilter.addEventListener("change", () => {
+  const selected = brandFilter.value;
+  const filtered = cars.filter(car => car.car === selected);
+  displayCars(filtered, "filtered-cars");
 });
 
+function fillBrandFilter(carList) {
+  const brands = [...new Set(carList.map(car => car.car))];
+  brands.forEach(brand => {
+    const option = document.createElement("option");
+    option.value = brand;
+    option.textContent = brand;
+    brandFilter.appendChild(option);
+  });
+}
 
+// Auto aleatorio
+function mostrarAutoSugerido() {
+  const random = cars[Math.floor(Math.random() * cars.length)];
+  displayCars([random], "auto-sugerido");
+}
 
+// Registro
+const registroForm = document.getElementById("registroForm");
+registroForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  alert("¡Registro exitoso!");
+  registroForm.reset();
+});
 
+// Inicializar
+fetchCars();
+loadFavorites();
 
 
 

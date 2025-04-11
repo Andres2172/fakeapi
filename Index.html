@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Autos App</title>
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <nav>
+    <button onclick="showTab('home')">Inicio</button>
+    <button onclick="showTab('favoritos')">Favoritos</button>
+    <button onclick="showTab('buscar')">Buscar</button>
+    <button onclick="showTab('sugerido')">Sugerido</button>
+    <button onclick="showTab('registro')">Registro</button>
+  </nav>
+
+  <section id="home" class="tab active">
+    <h1>Listado de Autos</h1>
+    <div id="product-list" class="grid"></div>
+  </section>
+
+  <section id="favoritos" class="tab">
+    <h1>Mis Favoritos</h1>
+    <div id="favorites-list" class="grid"></div>
+  </section>
+
+  <section id="buscar" class="tab">
+    <h1>Buscar por Marca</h1>
+    <input type="text" id="searchInput" placeholder="Buscar marca o modelo...">
+    <select id="brandFilter">
+      <option value="" disabled selected>Filtrar por marca</option>
+    </select>
+    <div id="filtered-cars" class="grid"></div>
+  </section>
+
+  <section id="sugerido" class="tab">
+    <h1>Auto Sugerido</h1>
+    <button onclick="mostrarAutoSugerido()">Mostrar uno al azar</button>
+    <div id="auto-sugerido" class="grid"></div>
+  </section>
+
+  <section id="registro" class="tab">
+    <h1>Formulario de Registro</h1>
+    <form id="registroForm">
+      <input type="text" placeholder="Nombre completo" required>
+      <input type="email" placeholder="Correo electrónico" required>
+      <input type="text" placeholder="Nombre de usuario" required>
+      <input type="password" placeholder="Contraseña" required>
+      <input type="tel" placeholder="Teléfono" required>
+      <input type="text" placeholder="Dirección" required>
+      <input type="date" required>
+      <button type="submit">Registrarse</button>
+    </form>
+  </section>
+
+  <p id="error-message" class="error"></p>
+  <script src="app.js"></script>
+</body>
+</html>
