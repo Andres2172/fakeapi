@@ -1,4 +1,4 @@
-
+  {
   "name": "fakeapi App",
   "short_name": "fakeapi",
   "start_url": ".",
@@ -17,7 +17,11 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "scope": "/",
+  "description": "Una aplicación que consume una API falsa para desarrollo.",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "version": "1.0"
 }
-
-
