@@ -1,13 +1,36 @@
-/* Reset */
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Variables de tema */
+:root {
+  --color-primary: #0077ff;
+  --color-primary-dark: #005bb5;
+  --color-warning: #ffe600;
+  --color-bg: #f4f4f9;
+  --color-text: #333;
+  --color-white: #fff;
+  --radius: 12px;
+  --font-family: 'Segoe UI', sans-serif;
+}
+
+/* Modo oscuro opcional */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #121212;
+    --color-text: #f8f8f8;
+    --color-white: #1e1e1e;
+  }
+}
+
+/* Estilos globales */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f4f4f9;
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   padding-bottom: 60px;
 }
 
@@ -18,7 +41,7 @@ main#app {
 }
 
 h1 {
-  color: #0077ff;
+  color: var(--color-primary);
   margin-bottom: 1rem;
 }
 
@@ -32,12 +55,14 @@ p {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #0077ff;
+  background: var(--color-primary);
   display: flex;
   justify-content: space-around;
+  align-items: center;
   padding: 10px 0;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  height: 60px;
 }
 
 .c-nav-item {
@@ -46,23 +71,31 @@ p {
   color: white;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.c-nav-item:hover {
+.c-nav-item:hover,
+.c-nav-item:focus {
   transform: scale(1.1);
-  color: #ffe600;
+  color: var(--color-warning);
+  outline: none;
 }
 
 /* Tarjetas de autos */
 .card {
-  background: white;
-  border-radius: 12px;
+  background: var(--color-white);
+  border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   padding: 1rem;
   text-align: center;
   margin-bottom: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card img {
@@ -74,11 +107,12 @@ p {
 
 .card h3 {
   margin-top: 1rem;
-  color: #0077ff;
+  color: var(--color-primary);
 }
 
 .card p {
-  color: #555;
+  color: var(--color-text);
+  opacity: 0.8;
   margin: 5px 0;
 }
 
@@ -86,12 +120,13 @@ p {
   margin-top: 10px;
   padding: 10px 20px;
   border: none;
-  background: #0077ff;
+  background: var(--color-primary);
   color: white;
   border-radius: 20px;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .card button:hover {
-  background: #005bb5;
+  background: var(--color-primary-dark);
 }

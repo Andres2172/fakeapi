@@ -1,11 +1,15 @@
-  {
-  "name": "fakeapi App",
-  "short_name": "fakeapi",
-  "start_url": ".",
+{
+  "name": "App de Autos",
+  "short_name": "AutosApp",
+  "start_url": "/fakeapi/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
   "orientation": "portrait",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "description": "Una aplicación para explorar autos falsos desde una API de ejemplo.",
+  "scope": "/fakeapi/",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -18,10 +22,13 @@
       "type": "image/png"
     }
   ],
-  "scope": "/",
-  "description": "Una aplicación que consume una API falsa para desarrollo.",
-  "lang": "es-ES",
-  "dir": "ltr",
-  "prefer_related_applications": false,
-  "version": "1.0"
+  "screenshots": [
+    {
+      "src": "screenshots/screenshot1.jpg",
+      "sizes": "375x812",
+      "type": "image/jpeg",
+      "label": "Vista principal de la App"
+    }
+  ],
+  "prefer_related_applications": false
 }

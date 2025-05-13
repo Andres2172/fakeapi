@@ -1,48 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Autos</title>
-    <link rel="manifest" href="manifest.json"> <link rel="stylesheet" href="Style.css">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">  <meta name="theme-color" content="#007bff"> <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-            .then(reg => console.log('Service Worker registrado', reg))
-            .catch(err => console.log('Error al registrar SW', err));
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App de Autos</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/fakeapi/Style.css" />
+
+  <!-- Manifest y meta datos -->
+  <link rel="manifest" href="/fakeapi/manifest.json" />
+  <link rel="apple-touch-icon" href="/fakeapi/icons/icon-192.png" />
+  <meta name="color-scheme" content="light dark">
+
+  <!-- Fuentes o iconos adicionales (ejemplo) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap " rel="stylesheet">
+
+  <!-- Registro del Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/fakeapi/sw.js')
+          .then(registration => {
+            console.log('Service Worker registrado:', registration);
+          })
+          .catch(error => {
+            console.log('Error registrando SW:', error);
+          });
+      });
+    }
+  </script>
 </head>
 <body>
-    <main id="app">
-        <h1>Bienvenido a la App de Autos</h1>
-        <p>Explora nuestra selección de autos.</p>
-        <div id="lista-de-autos">Cargando lista de autos...</div>
-        <div id="usuario-content" style="display:none;"></div>
-        <div id="aleatorio-content" style="display:none;"></div>
-        <div id="favoritos-content" style="display:none;"></div>
-        <div id="api-content" style="display:none;"></div>
-        <div id="detalle-content" style="display:none;"></div>
-    </main>
+  <main id="app">
+    <h1>Bienvenido a la App de Autos</h1>
+    <p>Explora nuestra selección de autos.</p>
 
-    <aside class="c-nav">
-        <button class="c-nav-item" onclick="mostrarSeccion('home')">🏠 Home</button>
-        <button class="c-nav-item" onclick="mostrarSeccion('usuario')">👤 Usuario</button>
-        <button class="c-nav-item" onclick="mostrarSeccion('aleatorio')">🎲 Aleatorio</button>
-        <button class="c-nav-item" onclick="mostrarSeccion('favoritos')">⭐ Favoritos</button>
-        <button class="c-nav-item" onclick="mostrarSeccion('api')">📥 Datos API</button>
-    </aside>
+    <div id="lista-de-autos">Cargando lista de autos...</div>
 
-    <script src="api.js"></script>
-    <script src="lista.js"></script>
-    <script src="Usuario.js"></script>
-    <script src="aleatorios.js"></script>
-    <script src="Favoritos.js"></script>
-    <script src="detalle.js"></script>
-    <script src="general.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => mostrarSeccion("home"));
-    </script>
+    <!-- Contenedores dinámicos -->
+    <div id="usuario-content" style="display:none;"></div>
+    <div id="aleatorio-content" style="display:none;"></div>
+    <div id="favoritos-content" style="display:none;"></div>
+    <div id="api-content" style="display:none;"></div>
+    <div id="detalle-content" style="display:none;"></div>
+  </main>
+
+  <!-- Navegación lateral -->
+  <aside class="c-nav">
+    <button class="c-nav-item" onclick="mostrarSeccion('home')">🏠 Home</button>
+    <button class="c-nav-item" onclick="mostrarSeccion('usuario')">👤 Usuario</button>
+    <button class="c-nav-item" onclick="mostrarSeccion('aleatorio')">🎲 Aleatorio</button>
+    <button class="c-nav-item" onclick="mostrarSeccion('favoritos')">⭐ Favoritos</button>
+    <button class="c-nav-item" onclick="mostrarSeccion('api')">📥 Datos API</button>
+  </aside>
+
+  <!-- Scripts -->
+  <script src="/fakeapi/api.js"></script>
+  <script src="/fakeapi/lista.js"></script>
+  <script src="/fakeapi/Usuario.js"></script>
+  <script src="/fakeapi/aleatorios.js"></script>
+  <script src="/fakeapi/Favoritos.js"></script>
+  <script src="/fakeapi/detalle.js"></script>
+  <script src="/fakeapi/general.js"></script>
+
+  <!-- Lógica inicial -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => mostrarSeccion("home"));
+  </script>
 </body>
 </html>
 
