@@ -1,6 +1,6 @@
 {
-  "name": "FakeAPI App",
-  "short_name": "FakeAPI",
+  "name": "fakeapi App",
+  "short_name": "fakeapi",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
