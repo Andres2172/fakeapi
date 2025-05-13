@@ -1,34 +1,21 @@
 {
-  "name": "App de Autos",
-  "short_name": "AutosApp",
-  "start_url": "/fakeapi/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#007bff",
-  "orientation": "portrait",
-  "lang": "es-ES",
-  "dir": "ltr",
-  "description": "Una aplicación para explorar autos falsos desde una API de ejemplo.",
-  "scope": "/fakeapi/",
-  "icons": [
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshots/screenshot1.jpg",
-      "sizes": "375x812",
-      "type": "image/jpeg",
-      "label": "Vista principal de la App"
-    }
-  ],
-  "prefer_related_applications": false
-}
+    "name": "App de Autos",
+    "short_name": "AutosApp",
+    "start_url": "/fakeapi/",
+    "display": "standalone",
+    "background_color": "#BE3D2A",
+    "theme_color": "#e00000",
+    "icons": [
+      {
+        "src": "icons/icon-192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
