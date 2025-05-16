@@ -9,9 +9,12 @@
   <link rel="stylesheet" href="/fakeapi/Style.css" />
 
   <!-- Manifest y meta datos -->
-  <link rel="manifest" href="/fakeapi/manifest.json" />
-  <link rel="apple-touch-icon" href="/fakeapi/icons/icon-192.png" />
-  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="/fakeapi/manifest.json">
+  <meta name="theme-color" content="#e00000">
+  <link rel="apple-touch-icon" href="/fakeapi/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
   <!-- Fuentes o iconos adicionales (ejemplo) -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap " rel="stylesheet">
@@ -65,9 +68,19 @@
   <script src="/fakeapi/general.js"></script>
 
   <!-- Lógica inicial -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => mostrarSeccion("home"));
-  </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/fakeapi/sw.js')
+        .then(registration => {
+          console.log('Service Worker registrado:', registration);
+        })
+        .catch(error => {
+          console.log('Error registrando SW:', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>
 
