@@ -6,7 +6,7 @@
   <title>App de Autos</title>
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="/fakeapi/Style.css" />
+  <link rel="stylesheet" href="/Style.css" />
 
   <!-- Manifest y meta datos -->
   <link rel="manifest" href="/manifest.json">
@@ -19,20 +19,6 @@
   <!-- Fuentes o iconos adicionales (ejemplo) -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap " rel="stylesheet">
 
-  <!-- Registro del Service Worker -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/fakeapi/sw.js')
-          .then(registration => {
-            console.log('Service Worker registrado:', registration);
-          })
-          .catch(error => {
-            console.log('Error registrando SW:', error);
-          });
-      });
-    }
-  </script>
 </head>
 <body>
   <main id="app">
@@ -59,13 +45,15 @@
   </aside>
 
   <!-- Scripts -->
-  <script src="/fakeapi/api.js"></script>
-  <script src="/fakeapi/lista.js"></script>
-  <script src="/fakeapi/Usuario.js"></script>
-  <script src="/fakeapi/aleatorios.js"></script>
-  <script src="/fakeapi/Favoritos.js"></script>
-  <script src="/fakeapi/detalle.js"></script>
-  <script src="/fakeapi/general.js"></script>
+  <script src="/api.js"></script>
+  <script src="/lista.js"></script>
+  <script src="/Usuario.js"></script>
+  <script src="/aleatorios.js"></script>
+  <script src="/Favoritos.js"></script>
+  <script src="/detalle.js"></script>
+  <script src="/general.js"></script>
+
+  <script src="/sw.js"></script>
 
   <!-- Lógica inicial -->
 <script>

@@ -2,7 +2,7 @@
     "name": "App de Autos",
     "short_name": "AutosApp",
     "description": "Aplicación para ver información de autos",
-    "start_url": "/fakeapi/index.html",
+    "start_url": "/index.html",
     "scope": "/fakeapi/",
     "display": "standalone",
     "background_color": "#BE3D2A",
@@ -10,13 +10,13 @@
     "orientation": "portrait",
     "icons": [
       {
-        "src": "/fakeapi/icons/icon-192.png",
+        "src": "/icons/icon-192.png",
         "sizes": "192x192",
         "type": "image/png",
         "purpose": "any maskable"
       },
       {
-        "src": "/fakeapi/icons/icon-512.png",
+        "src": "/icons/icon-512.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any maskable"
