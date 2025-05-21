@@ -1,30 +1,29 @@
-const CACHE_NAME = "fakeapi-cache-v3";
+const CACHE_NAME = 'cars-pwa-v1';
 const urlsToCache = [
-  "/fakeapi/",
-  "/fakeapi/index.html",
-  "/fakeapi/Style.css",
-  "/fakeapi/api.js",
-  "/fakeapi/lista.js",
-  "/fakeapi/Usuario.js",
-  "/fakeapi/aleatorios.js",
-  "/fakeapi/Favoritos.js",
-  "/fakeapi/detalle.js",
-  "/fakeapi/general.js",
-  "/fakeapi/icons/icon-192.png",
-  "/fakeapi/icons/icon-512.png",
-  "/fakeapi/manifest.json",
-  // Agrega una página offline
-  "/fakeapi/offline.html"
+  '/',
+  '/index.html',
+  '/style.css',
+  '/js/lista.js',
+  '/js/favoritos.js',
+  '/js/detalle.js',
+  '/js/usuario.js',
+  '/js/aleatorios.js',
+  '/js/api.js',
+  '/js/general.js',
+  '/images/icon-192x192.png',
+  '/images/icon-512x512.png'
 ];
 
-self.addEventListener("install", (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Instalando Service Worker y cacheando recursos');
-      return cache.addAll(urlsToCache);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting();
 });
 
-// ...resto del código existente...
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
