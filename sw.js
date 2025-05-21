@@ -1,17 +1,18 @@
 const CACHE_NAME = 'cars-pwa-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/js/lista.js',
-  '/js/favoritos.js',
-  '/js/detalle.js',
-  '/js/usuario.js',
-  '/js/aleatorios.js',
-  '/js/api.js',
-  '/js/general.js',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png'
+  './',
+  './index.html',
+  './Style.css',
+  './js/lista.js',
+  './js/favoritos.js',
+  './js/detalle.js',
+  './js/usuario.js',
+  './js/aleatorios.js',
+  './js/api.js',
+  './js/general.js',
+  './icons/icon-192x192.png',
+  './icons/icon-512x512.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
